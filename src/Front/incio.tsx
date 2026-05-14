@@ -46,7 +46,7 @@ export function UserInfoPage() {
 
         {userInfo && (
           <div className="mt-4 rounded-lg border border-border p-4 space-y-2">
-            <p><strong>Nombre:</strong> {String(userInfo.nombre)}</p>
+            <p><strong>Nombre:</strong> {String(userInfo.name)}</p>
             <p><strong>Usuario:</strong> {String(userInfo.username)}</p>
             <p><strong>Contraseña hasheada:</strong> {String(userInfo.hashed_password)}</p>
           </div>
@@ -148,11 +148,11 @@ export function RegisterPage({ onGoToLogin }: RegisterPageProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await fetch('http://localhost:8000/register', {
+      const res = await fetch('http://localhost:8000/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          nombre: nombre,
+          name: nombre,
           username: nombreUsuario,
           password: contrasena,
         }),
