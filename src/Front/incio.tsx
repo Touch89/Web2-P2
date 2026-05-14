@@ -136,7 +136,6 @@ export function LoginPage({ onLogin, onGoToRegister }: LoginPageProps) {
     </div>
   );
 }
-
 interface RegisterPageProps {
   onGoToLogin: () => void;
 }
