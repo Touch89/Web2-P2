@@ -1,8 +1,7 @@
-import { useState } from 'react';
-
+import { useState } from "react";
 
 interface LoginPageProps {
-  onLogin: (token?: string) => void;
+  onLogin: (token: string) => void;
 }
 
 interface UserInfoPageProps {
@@ -10,59 +9,46 @@ interface UserInfoPageProps {
 }
 
 export function UserInfoPage({ token }: UserInfoPageProps) {
-  const [userInfo, setUserInfo] = useState<Record<string, unknown> | null>(null);
-  const [error, setError] = useState('');
+  const [userInfo, setUserInfo] = useState<Record<string, unknown> | null>(
+    null,
+  );
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const fetchViaCookie = async () => {
     setLoading(true);
-    setError('');
+    setError("");
     setUserInfo(null);
-    try {
-      const res = await fetch('/api/user/me', {
-        credentials: 'include',
-      });
-      if (!res.ok) throw new Error(`Error ${res.status}: ${res.statusText}`);
-      const data = await res.json();
-      setUserInfo(data);
-    } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Error desconocido');
-    } finally {
-      setLoading(false);
-    }
+    setLoading(false);
   };
 
   const fetchViaHeader = async () => {
     setLoading(true);
-    setError('');
+    setError("");
     setUserInfo(null);
-    try {
-      const res = await fetch('/api/user/me', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (!res.ok) throw new Error(`Error ${res.status}: ${res.statusText}`);
-      const data = await res.json();
-      setUserInfo(data);
-    } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Error desconocido');
-    } finally {
-      setLoading(false);
-    }
+    console.log("token disponible:", token);
+    setLoading(false);
   };
 
   return (
     <div className="min-h-screen w-full bg-white flex flex-col items-center justify-center px-4">
       <div className="flex items-center gap-4 mb-10">
         <div>
-          <div className="text-xs font-medium text-muted-foreground uppercase tracking-widest">PapuPro</div>
-          <div className="text-2xl font-bold text-foreground leading-tight">Six<br />Seven</div>
+          <div className="text-xs font-medium text-muted-foreground uppercase tracking-widest">
+            PapuPro
+          </div>
+          <div className="text-2xl font-bold text-foreground leading-tight">
+            Six
+            <br />
+            Seven
+          </div>
         </div>
       </div>
 
       <div className="w-full max-w-sm space-y-4">
-        <h2 className="text-lg font-semibold text-foreground text-center">Información del Usuario</h2>
+        <h2 className="text-lg font-semibold text-foreground text-center">
+          Información del Usuario
+        </h2>
 
         <button
           onClick={fetchViaCookie}
@@ -81,7 +67,9 @@ export function UserInfoPage({ token }: UserInfoPageProps) {
         </button>
 
         {loading && (
-          <p className="text-sm text-muted-foreground text-center">Cargando...</p>
+          <p className="text-sm text-muted-foreground text-center">
+            Cargando...
+          </p>
         )}
 
         {error && (
@@ -98,70 +86,81 @@ export function UserInfoPage({ token }: UserInfoPageProps) {
   );
 }
 
-export function LoginPage({ onLogin }: LoginPageProps) {
-  const [usuario, setUsuario] = useState('');
-  const [contrasena, setContrasena] = useState('');
-  const [error, setError] = useState('');
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!usuario || !contrasena) {
-      setError('Por favor ingresa usuario y contraseña.');
-      return;
-    }
-
-    setError('');
-    onLogin(); // token will be passed here once the API is ready
-  };
+export function LoginPage({ onLogin: _onLogin }: LoginPageProps) {
+  const [usuario, setUsuario] = useState("");
+  const [contrasena, setContrasena] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   return (
-
-
-
     <div className="min-h-screen w-full bg-white flex flex-col items-center justify-center px-4">
-
       <div className="flex items-center gap-4 mb-10">
-
         <div>
-          <div className="text-xs font-medium text-muted-foreground uppercase tracking-widest">PapuPro</div>
-          <div className="text-2xl font-bold text-foreground leading-tight">Six<br />Seven</div>
+          <div className="text-xs font-medium text-muted-foreground uppercase tracking-widest">
+            PapuPro
+          </div>
+          <div className="text-2xl font-bold text-foreground leading-tight">
+            Six
+            <br />
+            Seven
+          </div>
         </div>
       </div>
 
-
-      <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-5">
+      <form
+        onSubmit={async (e) => {
+          e.preventDefault();
+          if (!usuario || !contrasena) {
+            setError("Por favor ingresa usuario y contraseña.");
+            return;
+          }
+          setError("");
+          setLoading(true);
+          setLoading(false);
+        }}
+        className="w-full max-w-sm space-y-5"
+      >
         <div>
-          <label className="block text-sm font-medium text-muted-foreground mb-1">Usuario</label>
+          <label className="block text-sm font-medium text-muted-foreground mb-1">
+            Usuario
+          </label>
           <input
             type="text"
             autoComplete="username"
             value={usuario}
-            onChange={e => { setUsuario(e.target.value); setError(''); }}
+            onChange={(e) => {
+              setUsuario(e.target.value);
+              setError("");
+            }}
             placeholder="Ingresa tu usuario"
             className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-muted-foreground mb-1">Contraseña</label>
+          <label className="block text-sm font-medium text-muted-foreground mb-1">
+            Contraseña
+          </label>
           <input
             type="password"
             autoComplete="current-password"
             value={contrasena}
-            onChange={e => { setContrasena(e.target.value); setError(''); }}
+            onChange={(e) => {
+              setContrasena(e.target.value);
+              setError("");
+            }}
             placeholder="Ingresa tu contraseña"
             className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
         </div>
 
-        {error && (
-          <p className="text-sm text-destructive">{error}</p>
-        )}
+        {error && <p className="text-sm text-destructive">{error}</p>}
 
         <button
           type="submit"
-          className="w-full py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
+          disabled={loading}
+          className="w-full py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50"
         >
-          Iniciar sesión
+          {loading ? "Entrando..." : "Iniciar sesión"}
         </button>
       </form>
     </div>
