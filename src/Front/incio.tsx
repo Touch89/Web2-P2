@@ -1,6 +1,5 @@
 import { useState } from 'react';
 
-
 interface LoginPageProps {
   onLogin: (token?: string) => void;
   onGoToRegister: () => void;
@@ -90,19 +89,13 @@ export function LoginPage({ onLogin, onGoToRegister }: LoginPageProps) {
   };
 
   return (
-
-
-
     <div className="min-h-screen w-full bg-white flex flex-col items-center justify-center px-4">
-
       <div className="flex items-center gap-4 mb-10">
-
         <div>
           <div className="text-xs font-medium text-muted-foreground uppercase tracking-widest">PapuPro</div>
           <div className="text-2xl font-bold text-foreground leading-tight">Six<br />Seven</div>
         </div>
       </div>
-
 
       <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-5">
         <div>
@@ -128,9 +121,7 @@ export function LoginPage({ onLogin, onGoToRegister }: LoginPageProps) {
           />
         </div>
 
-        {error && (
-          <p className="text-sm text-destructive">{error}</p>
-        )}
+        {error && <p className="text-sm text-destructive">{error}</p>}
 
         <button
           type="submit"
