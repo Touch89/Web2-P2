@@ -4,7 +4,7 @@ interface LoginPageProps {
   onLogin: (token?: string) => void;
   onGoToRegister: () => void;
 }
-
+//llama GET /users/m con credentials: 'include'
 export function UserInfoPage() {
   const [userInfo, setUserInfo] = useState<Record<string, unknown> | null>(null);
   const [error, setError] = useState('');
@@ -55,7 +55,8 @@ export function UserInfoPage() {
     </div>
   );
 }
-
+//Pide usuario y contraseña, se construye en un URLSearchParams y llama a /login, 
+// se guarda en las cookies con credentials: 'include,
 export function LoginPage({ onLogin, onGoToRegister }: LoginPageProps) {
   const [usuario, setUsuario] = useState('');
   const [contrasena, setContrasena] = useState('');
@@ -140,6 +141,7 @@ interface RegisterPageProps {
   onGoToLogin: () => void;
 }
 
+//Pide nombre, usuario y psw, hace un post a /users, exito/fallo y botón si ya tienes cuenta
 export function RegisterPage({ onGoToLogin }: RegisterPageProps) {
   const [nombre, setNombre] = useState('');
   const [nombreUsuario, setNombreUsuario] = useState('');
