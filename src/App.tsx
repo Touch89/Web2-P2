@@ -1,22 +1,22 @@
 import { useState } from 'react'
-import { LoginPage, UserInfoPage } from './Front/incio'
+import { LoginPage, UserInfoPage, RegisterPage } from './Front/incio'
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false)
-  const [token, setToken] = useState('')
-
-  if (loggedIn) {
-    return <UserInfoPage token={token} />
+  const [view, setView] = useState<'register' | 'login' | 'userInfo'>('register')
+  if (view === 'userInfo') {
+    return <UserInfoPage />
   }
 
-  return (
-    <LoginPage
-      onLogin={(t = '') => {
-        setToken(t)
-        setLoggedIn(true)
-      }}
-    />
-  )
+  if (view === 'login') {
+    return (
+      <LoginPage
+        onLogin={() => setView('userInfo')}
+        onGoToRegister={() => setView('register')}
+      />
+    )
+  }
+
+  return <RegisterPage onGoToLogin={() => setView('login')} />
 }
 
 export default App
